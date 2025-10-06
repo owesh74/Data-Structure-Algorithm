@@ -52,6 +52,33 @@ Data-Structure-Algorithm/
 │  ├── RevArray.java
 │  ├── SubArrays.java
 │  └── TrappedWater.java
+|
+├── MultiDimetionalArray
+    ├── Assignment_1.java
+    ├── DigonalSumInMatrix.java
+    ├── LargestAndSmallestInArray.java
+    ├── SearchInMatrix.java
+    └── SpiralMatrix.java
+├── Patterns
+    ├── Prac.class
+    ├── Prac.java
+    ├── pattern.class
+    └── pattern.java
+|
+├── Sorting
+    ├── BubbleSort.java
+    ├── CountingSort.java
+    ├── InbuildSort.java
+    ├── InsertionSort.java
+    └── SelectionSort.java
+└── Strings
+    ├── FirstLetterUpperCase.java
+    ├── PalindroimeInString.java
+    ├── ShortestPath.java
+    ├── StringCompression.java
+    ├── String_1.java
+    └── assignment_1.java
+
 ```
 
 ---
