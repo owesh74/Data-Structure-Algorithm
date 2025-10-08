@@ -54,23 +54,23 @@ Data-Structure-Algorithm/
 │  └── TrappedWater.java
 |
 ├── MultiDimetionalArray
-    ├── Assignment_1.java
-    ├── DigonalSumInMatrix.java
-    ├── LargestAndSmallestInArray.java
-    ├── SearchInMatrix.java
-    └── SpiralMatrix.java
+|   ├── Assignment_1.java
+|   ├── DigonalSumInMatrix.java
+|   ├── LargestAndSmallestInArray.java
+|   ├── SearchInMatrix.java
+|   └── SpiralMatrix.java
 ├── Patterns
-    ├── Prac.class
-    ├── Prac.java
-    ├── pattern.class
-    └── pattern.java
+|   ├── Prac.class
+|   ├── Prac.java
+|   ├── pattern.class
+|   └── pattern.java
 |
 ├── Sorting
-    ├── BubbleSort.java
-    ├── CountingSort.java
-    ├── InbuildSort.java
-    ├── InsertionSort.java
-    └── SelectionSort.java
+|   ├── BubbleSort.java
+|   ├── CountingSort.java
+|   ├── InbuildSort.java
+|   ├── InsertionSort.java
+|   └── SelectionSort.java
 └── Strings
     ├── FirstLetterUpperCase.java
     ├── PalindroimeInString.java
