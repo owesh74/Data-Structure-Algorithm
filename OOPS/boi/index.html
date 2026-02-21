@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Tourism Analysis Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label, select, input, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #results {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>World Tourism Analysis Tool</h1>
+
+        <div>
+            <label for="analysisType">Select an Analysis:</label>
+            <select id="analysisType">
+                <option value="trendAnalysis">Trend Analysis</option>
+                <option value="correlationStudy">Correlation Study</option>
+                <option value="countryComparison">Country Comparison</option>
+                <option value="clustering">Clustering</option>
+                <option value="predictiveModeling">Predictive Modeling</option>
+            </select>
+        </div>
+
+        <div id="additionalInputs"></div>
+
+        <button onclick="runAnalysis()">Run Analysis</button>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const data = [];
+
+        async function loadData() {
+            const response = await fetch('world_tourism_economy_data.csv');
+            const csv = await response.text();
+            const rows = csv.split('\n');
+            const headers = rows.shift().split(',');
+
+            rows.forEach(row => {
+                if (row) {
+                    const values = row.split(',');
+                    const obj = {};
+                    headers.forEach((header, index) => {
+                        obj[header.trim()] = values[index].trim();
+                    });
+                    data.push(obj);
+                }
+            });
+        }
+
+        loadData().then(() => {
+            console.log('Data loaded successfully:', data);
+        });
+
+        function runAnalysis() {
+            const analysisType = document.getElementById('analysisType').value;
+            let additionalInputs = '';
+            let output = '';
+
+            switch (analysisType) {
+                case 'trendAnalysis':
+                    additionalInputs = '<label for="country">Enter the country name:</label><input type="text" id="country" placeholder="Country Name">';
+                    break;
+                case 'correlationStudy':
+                    output = calculateCorrelation();
+                    break;
+                case 'countryComparison':
+                    additionalInputs = '<label for="metric">Enter the metric (e.g., "tourism_receipts"):</label><input type="text" id="metric" placeholder="Metric">';
+                    break;
+                case 'clustering':
+                    output = performClustering();
+                    break;
+                case 'predictiveModeling':
+                    output = predictiveModeling();
+                    break;
+                default:
+                    output = '<p>Invalid analysis type selected.</p>';
+            }
+
+            document.getElementById('additionalInputs').innerHTML = additionalInputs;
+            document.getElementById('results').innerHTML = output || '<p class="loading">Provide additional inputs and click "Run Analysis".</p>';
+        }
+
+        function calculateCorrelation() {
+            if (data.length === 0) {
+                return '<p>Data is not loaded.</p>';
+            }
+
+            const columns = Object.keys(data[0]);
+            let correlationMatrix = '<h2>Correlation Study</h2><table><tr><th>Metric 1</th><th>Metric 2</th><th>Correlation</th></tr>';
+
+            columns.forEach(col1 => {
+                columns.forEach(col2 => {
+                    if (col1 !== col2) {
+                        const correlation = computeCorrelation(col1, col2);
+                        correlationMatrix += `<tr><td>${col1}</td><td>${col2}</td><td>${correlation.toFixed(2)}</td></tr>`;
+                    }
+                });
+            });
+
+            correlationMatrix += '</table>';
+            return correlationMatrix;
+        }
+
+        function computeCorrelation(column1, column2) {
+            const values1 = data.map(item => parseFloat(item[column1]) || 0);
+            const values2 = data.map(item => parseFloat(item[column2]) || 0);
+            const mean1 = values1.reduce((a, b) => a + b, 0) / values1.length;
+            const mean2 = values2.reduce((a, b) => a + b, 0) / values2.length;
+            const numerator = values1.map((val, i) => (val - mean1) * (values2[i] - mean2)).reduce((a, b) => a + b, 0);
+            const denominator = Math.sqrt(values1.map(val => (val - mean1) ** 2).reduce((a, b) => a + b, 0)) *
+                                Math.sqrt(values2.map(val => (val - mean2) ** 2).reduce((a, b) => a + b, 0));
+            return numerator / denominator || 0;
+        }
+
+        function performClustering() {
+            if (data.length === 0) {
+                return '<p>Data is not loaded.</p>';
+            }
+
+            const clusters = kMeansClustering();
+            let clusteringResults = '<h2>Clustering</h2><table><tr><th>Country</th><th>Cluster</th></tr>';
+
+            data.forEach((item, index) => {
+                clusteringResults += `<tr><td>${item['country']}</td><td>${clusters[index]}</td></tr>`;
+            });
+
+            clusteringResults += '</table>';
+            return clusteringResults;
+        }
+
+        function kMeansClustering() {
+            const k = 3; // Example for 3 clusters
+            const clusters = Array(data.length).fill().map(() => Math.floor(Math.random() * k));
+            return clusters;
+        }
+
+        function predictiveModeling() {
+            if (data.length === 0) {
+                return '<p>Data is not loaded.</p>';
+            }
+
+            return '<p>Predictive modeling logic to be implemented.</p>';
+        }
+    </script>
+</body>
+</html>

@@ -27,25 +27,10 @@ public class Array_1{
       
     int arr[] = {100,4,2,7,14,9,3,6,55,0};
     
-    //Linear search----------------------
-    //   int key = 55;
-
-    // if (LinearSort(arr,key) == -1){
-    //   System.out.println(" no Value Found ");
-    // } 
-    // else{
-    //   System.out.println(key + " is on " + LinearSort(arr,key) + " Index");
-
-    // }
-
-   //=====================================
-   
-   
-    //largest In Array-----------------------------------
+  
 
     System.out.println("Largest Number is " + LargestInArray(arr) + " It is at " + LinearSort(arr,LargestInArray(arr)) + " Index");
 
-    //===================================================
 
 
     }
