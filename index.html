@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Pattern-Wise Question Bank</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent1: #7c3aed;
+    --accent2: #06b6d4;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --accent5: #ef4444;
+    --accent6: #ec4899;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --tag-bg: #1e1e2e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    padding: 60px 0 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    border: 1px solid rgba(6,182,212,0.3);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Stats */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent1);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Search & Filter */
+  .controls {
+    margin-bottom: 48px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-wrap {
+    flex: 1;
+    min-width: 240px;
+    position: relative;
+  }
+
+  .search-wrap::before {
+    content: '⌕';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  input[type="search"] {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 12px 16px 12px 42px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="search"]:focus {
+    border-color: var(--accent1);
+  }
+
+  input[type="search"]::placeholder { color: var(--muted); }
+
+  .filter-btns {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent1);
+    border-color: var(--accent1);
+    color: #fff;
+  }
+
+  /* Category sections */
+  .category {
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .category:hover {
+    border-color: rgba(124,58,237,0.3);
+  }
+
+  .cat-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--surface);
+    transition: background 0.2s;
+  }
+
+  .cat-header:hover { background: #13131c; }
+
+  .cat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .cat-title {
+    flex: 1;
+  }
+
+  .cat-title h2 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .cat-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .cat-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    background: var(--tag-bg);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .cat-toggle {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+
+  .category.collapsed .cat-toggle { transform: rotate(-90deg); }
+
+  /* Patterns grid */
+  .patterns-grid {
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+    background: var(--bg);
+  }
+
+  .category.collapsed .patterns-grid { display: none; }
+
+  /* Pattern card */
+  .pattern {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .pattern-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pattern-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .pattern-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .q-list {
+    list-style: none;
+    padding: 8px 0;
+  }
+
+  .q-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .q-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    width: 100%;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  .q-link:hover {
+    background: rgba(124,58,237,0.08);
+    border-left-color: var(--accent1);
+    color: #fff;
+  }
+
+  .q-link:hover .q-arrow { opacity: 1; transform: translateX(0); }
+
+  .q-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    min-width: 22px;
+  }
+
+  .q-arrow {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--accent1);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.15s;
+  }
+
+  .q-link.external::after {
+    content: '↗';
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .q-link:hover.external::after { opacity: 1; }
+
+  /* No-link style */
+  .q-link.no-link {
+    cursor: default;
+    color: var(--muted);
+  }
+
+  .q-link.no-link:hover {
+    background: rgba(100,116,139,0.05);
+    border-left-color: transparent;
+    color: var(--muted);
+  }
+
+  /* Hidden state for search */
+  .q-item.hidden { display: none; }
+  .pattern.all-hidden { opacity: 0.3; }
+
+  footer {
+    text-align: center;
+    padding: 40px 0 60px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .patterns-grid { grid-template-columns: 1fr; }
+    .stats { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="header-badge">Pattern-Wise Study Guide</div>
+    <h1>DSA Question Bank</h1>
+    <p class="subtitle">by Product Parikh &amp; Jain</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="total-q">200+</div><div class="stat-label">Questions</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num">30+</div><div class="stat-label">Patterns</div></div>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <input type="search" id="search" placeholder="Search questions..." autocomplete="off">
+    </div>
+    <div class="filter-btns">
+      <button class="filter-btn active" data-cat="all">All</button>
+      <button class="filter-btn" data-cat="arrays">Arrays</button>
+      <button class="filter-btn" data-cat="strings">Strings</button>
+      <button class="filter-btn" data-cat="trees">Trees</button>
+      <button class="filter-btn" data-cat="graphs">Graphs</button>
+      <button class="filter-btn" data-cat="dp">DP</button>
+      <button class="filter-btn" data-cat="linked">Linked List</button>
+      <button class="filter-btn" data-cat="stack">Stack</button>
+      <button class="filter-btn" data-cat="heap">Heap</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 1: ARRAYS & TWO POINTERS
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="arrays" id="cat-arrays">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(124,58,237,0.15)">🔢</div>
+      <div class="cat-title">
+        <h2 style="color:#a78bfa">Arrays, Two Pointers &amp; Intervals</h2>
+        <div class="cat-meta">Two Pointers · Merge Intervals · Sorting · Sliding Window · Prefix Sums</div>
+      </div>
+      <span class="cat-count">34 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#a78bfa"></div>
+          <span class="pattern-name">Two Pointers</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/two-sum/" target="_blank"><span class="q-num">01</span>Two Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/3sum/" target="_blank"><span class="q-num">02</span>3Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/3sum-closest/" target="_blank"><span class="q-num">03</span>3Sum Closest</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank"><span class="q-num">04</span>Remove Duplicates from Sorted Array</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/squares-of-a-sorted-array/" target="_blank"><span class="q-num">05</span>Squares of a Sorted Array</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#7c3aed"></div>
+          <span class="pattern-name">Merge Intervals</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/merge-intervals/" target="_blank"><span class="q-num">01</span>Merge Intervals</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/insert-interval/" target="_blank"><span class="q-num">02</span>Insert Interval</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/non-overlapping-intervals/" target="_blank"><span class="q-num">03</span>Non-overlapping Intervals</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/interval-list-intersections/" target="_blank"><span class="q-num">04</span>Interval List Intersections</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#06b6d4"></div>
+          <span class="pattern-name">Sorting</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/sort-colors/" target="_blank"><span class="q-num">01</span>Sort Colors</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/meeting-rooms-ii/" target="_blank"><span class="q-num">02</span>Meeting Rooms II</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/largest-number/" target="_blank"><span class="q-num">03</span>Largest Number</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/wiggle-sort-ii/" target="_blank"><span class="q-num">04</span>Wiggle Sort II</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/merge-sorted-array/" target="_blank"><span class="q-num">05</span>Merge Sorted Array</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/count-of-smaller-numbers-after-self/" target="_blank"><span class="q-num">06</span>Count of Smaller Numbers After Self</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#10b981"></div>
+          <span class="pattern-name">Sliding Window</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/minimum-size-subarray-sum/" target="_blank"><span class="q-num">01</span>Minimum Size Subarray Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-mountain-in-array/" target="_blank"><span class="q-num">02</span>Longest Mountain in Array</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-continuous-increasing-subsequence/" target="_blank"><span class="q-num">03</span>Longest Continuous Increasing Subsequence</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/" target="_blank"><span class="q-num">04</span>Maximum Points You Can Obtain from Cards</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/subarray-product-less-than-k/" target="_blank"><span class="q-num">05</span>Subarray Product Less Than K</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/maximum-product-subarray/" target="_blank"><span class="q-num">06</span>Maximum Product Subarray</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-all-duplicates-in-an-array/" target="_blank"><span class="q-num">07</span>Find All Duplicates in an Array</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#f59e0b"></div>
+          <span class="pattern-name">Prefix Sums</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/range-sum-query-mutable/" target="_blank"><span class="q-num">01</span>Range Sum Query – Mutable</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/count-of-range-sum/" target="_blank"><span class="q-num">02</span>Count of Range Sum</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 2: STRINGS
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="strings" id="cat-strings">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(6,182,212,0.15)">🔤</div>
+      <div class="cat-title">
+        <h2 style="color:#67e8f9">Strings, Hashmaps &amp; Regex</h2>
+        <div class="cat-meta">Two Pointers · Sliding Window · Hashmaps · String Manipulation · Regular Expressions</div>
+      </div>
+      <span class="cat-count">25 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#67e8f9"></div>
+          <span class="pattern-name">Two Pointers on Strings</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/valid-palindrome/" target="_blank"><span class="q-num">01</span>Valid Palindrome</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/reverse-words-in-a-string/" target="_blank"><span class="q-num">02</span>Reverse Words in a String</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank"><span class="q-num">03</span>Longest Palindromic Substring</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/implement-strstr/" target="_blank"><span class="q-num">04</span>Implement strStr()</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#06b6d4"></div>
+          <span class="pattern-name">Sliding Window on Strings</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/minimum-window-substring/" target="_blank"><span class="q-num">01</span>Minimum Window Substring</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank"><span class="q-num">02</span>Longest Substring Without Repeating Characters</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/" target="_blank"><span class="q-num">03</span>Longest Substring with At Most K Distinct Characters</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-all-anagrams-in-a-string/" target="_blank"><span class="q-num">04</span>Find All Anagrams in a String</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-repeating-character-replacement/" target="_blank"><span class="q-num">05</span>Longest Repeating Character Replacement</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#7c3aed"></div>
+          <span class="pattern-name">Hashmaps</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/group-anagrams/" target="_blank"><span class="q-num">01</span>Group Anagrams</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/first-unique-character-in-a-string/" target="_blank"><span class="q-num">02</span>First Unique Character in a String</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/valid-anagram/" target="_blank"><span class="q-num">03</span>Valid Anagram</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#10b981"></div>
+          <span class="pattern-name">String Manipulation</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/string-compression/" target="_blank"><span class="q-num">01</span>String Compression</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/reverse-string/" target="_blank"><span class="q-num">02</span>Reverse String</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/reverse-integer/" target="_blank"><span class="q-num">03</span>Reverse Integer</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/string-to-integer-atoi/" target="_blank"><span class="q-num">04</span>String to Integer (atoi)</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/count-and-say/" target="_blank"><span class="q-num">05</span>Count and Say</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/decode-string/" target="_blank"><span class="q-num">06</span>Decode String</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#ef4444"></div>
+          <span class="pattern-name">Regular Expressions</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/validate-ip-address/" target="_blank"><span class="q-num">01</span>Validate IP Address</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/regular-expression-matching/" target="_blank"><span class="q-num">02</span>Regular Expression Matching</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/wildcard-matching/" target="_blank"><span class="q-num">03</span>Wildcard Matching</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 3: BINARY SEARCH & RECURSION
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="arrays" id="cat-binsearch">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(239,68,68,0.15)">🔍</div>
+      <div class="cat-title">
+        <h2 style="color:#fca5a5">Binary Search, Recursion &amp; Backtracking</h2>
+        <div class="cat-meta">Basic Binary Search · Range Search · Recursion · Divide & Conquer · Backtracking</div>
+      </div>
+      <span class="cat-count">31 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#fca5a5"></div>
+          <span class="pattern-name">Basic Binary Search</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/search-insert-position/" target="_blank"><span class="q-num">01</span>Search Insert Position</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/" target="_blank"><span class="q-num">02</span>Find Minimum in Rotated Sorted Array</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/peak-index-in-a-mountain-array/" target="_blank"><span class="q-num">03</span>Peak Index in a Mountain Array</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-smallest-letter-greater-than-target/" target="_blank"><span class="q-num">04</span>Find Smallest Letter Greater Than Target</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/valid-perfect-square/" target="_blank"><span class="q-num">05</span>Valid Perfect Square</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#ef4444"></div>
+          <span class="pattern-name">Range / Allocation Search</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/split-array-largest-sum/" target="_blank"><span class="q-num">01</span>Split Array Largest Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/" target="_blank"><span class="q-num">02</span>Find Kth Smallest Element in a Sorted Matrix</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/" target="_blank"><span class="q-num">03</span>Capacity To Ship Packages Within D Days</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/maximum-average-subarray-i/" target="_blank"><span class="q-num">04</span>Maximum Average Subarray I</a></li>
+          <li class="q-item"><a class="q-link external" href="https://www.interviewbit.com/problems/allocate-books/" target="_blank"><span class="q-num">05</span>Allocate Minimum Number of Pages</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/minimize-maximum-pair-sum-in-array/" target="_blank"><span class="q-num">06</span>Minimize Maximum Pair Sum in Array</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank"><span class="q-num">07</span>Find First and Last Position of Element in Sorted Array</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-peak-element/" target="_blank"><span class="q-num">08</span>Find Peak Element</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-in-mountain-array/" target="_blank"><span class="q-num">09</span>Find in Mountain Array</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#f59e0b"></div>
+          <span class="pattern-name">Recursion / Divide & Conquer</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/factorial-trailing-zeroes/" target="_blank"><span class="q-num">01</span>Factorial</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/fibonacci-number/" target="_blank"><span class="q-num">02</span>Fibonacci Number</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/powx-n/" target="_blank"><span class="q-num">03</span>Pow(x, n)</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/greatest-common-divisor-of-strings/" target="_blank"><span class="q-num">04</span>Greatest Common Divisor of Strings</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/binary-search/" target="_blank"><span class="q-num">05</span>Binary Search</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/sort-an-array/" target="_blank"><span class="q-num">06</span>Merge Sort</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/sort-an-array/" target="_blank"><span class="q-num">07</span>Quick Sort</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/maximum-subarray/" target="_blank"><span class="q-num">08</span>Maximum Subarray</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/minimum-moves-to-move-a-box-to-their-target-location/" target="_blank"><span class="q-num">09</span>Minimum Moves to Move a Box to Their Target Location</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#ec4899"></div>
+          <span class="pattern-name">Backtracking</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/generate-parentheses/" target="_blank"><span class="q-num">01</span>Generate Parentheses</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/combination-sum/" target="_blank"><span class="q-num">02</span>Combination Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/n-queens/" target="_blank"><span class="q-num">03</span>N-Queens</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/" target="_blank"><span class="q-num">04</span>Letter Combinations of a Phone Number</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/word-search/" target="_blank"><span class="q-num">05</span>Word Search</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/sudoku-solver/" target="_blank"><span class="q-num">06</span>Sudoku Solver</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/number-of-islands/" target="_blank"><span class="q-num">07</span>Number of Islands</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/path-sum/" target="_blank"><span class="q-num">08</span>Path Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/word-search-ii/" target="_blank"><span class="q-num">09</span>Word Search II</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 4: LINKED LIST
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="linked" id="cat-ll">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(16,185,129,0.15)">🔗</div>
+      <div class="cat-title">
+        <h2 style="color:#6ee7b7">Linked List</h2>
+        <div class="cat-meta">Fast & Slow Pointers · Dummy Node · Recursion · In-Place Reversal</div>
+      </div>
+      <span class="cat-count">19 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#6ee7b7"></div>
+          <span class="pattern-name">Fast & Slow Pointers</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/middle-of-the-linked-list/" target="_blank"><span class="q-num">01</span>Middle of the Linked List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/intersection-of-two-linked-lists/" target="_blank"><span class="q-num">02</span>Intersection of Two Linked Lists</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/linked-list-cycle/" target="_blank"><span class="q-num">03</span>Linked List Cycle</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" target="_blank"><span class="q-num">04</span>Remove Nth Node From End of List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/odd-even-linked-list/" target="_blank"><span class="q-num">05</span>Odd Even Linked List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/linked-list-cycle-ii/" target="_blank"><span class="q-num">06</span>Linked List Cycle II</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#10b981"></div>
+          <span class="pattern-name">Dummy Node Technique</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/add-two-numbers/" target="_blank"><span class="q-num">01</span>Add Two Numbers</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/merge-two-sorted-lists/" target="_blank"><span class="q-num">02</span>Merge Two Sorted Lists</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/partition-list/" target="_blank"><span class="q-num">03</span>Partition List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/remove-duplicates-from-sorted-list/" target="_blank"><span class="q-num">04</span>Remove Duplicates from Sorted List</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#047857"></div>
+          <span class="pattern-name">Recursion & In-Place Reversal</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/reverse-linked-list/" target="_blank"><span class="q-num">01</span>Reverse Linked List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/rotate-list/" target="_blank"><span class="q-num">02</span>Rotate List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/reorder-list/" target="_blank"><span class="q-num">03</span>Reorder List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/reverse-nodes-in-k-group/" target="_blank"><span class="q-num">04</span>Reverse Nodes in k-Group</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/swap-nodes-in-pairs/" target="_blank"><span class="q-num">05</span>Swap Nodes in Pairs</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/palindrome-linked-list/" target="_blank"><span class="q-num">06</span>Palindrome Linked List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/" target="_blank"><span class="q-num">07</span>Remove Duplicates from Sorted List II</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/" target="_blank"><span class="q-num">08</span>Flatten a Multilevel Doubly Linked List</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/split-linked-list-in-parts/" target="_blank"><span class="q-num">09</span>Split Linked List in Parts</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 5: STACK
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="stack" id="cat-stack">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(245,158,11,0.15)">📚</div>
+      <div class="cat-title">
+        <h2 style="color:#fcd34d">Stack, Monotonic Stack &amp; Expressions</h2>
+        <div class="cat-meta">Design Problems · Monotonic Stack · Expression Evaluation · Two Stacks · Sliding Window Max</div>
+      </div>
+      <span class="cat-count">24 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#fcd34d"></div>
+          <span class="pattern-name">Design Problems (Stack-Based)</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/implement-queue-using-stacks/" target="_blank"><span class="q-num">01</span>Implement Queue using Stacks</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/implement-stack-using-queues/" target="_blank"><span class="q-num">02</span>Implement Stack using Queues</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/design-browser-history/" target="_blank"><span class="q-num">03</span>Design Browser History</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/design-hit-counter/" target="_blank"><span class="q-num">04</span>Design Hit Counter</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/design-circular-queue/" target="_blank"><span class="q-num">05</span>Design Circular Queue</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/design-twitter/" target="_blank"><span class="q-num">06</span>Design Twitter</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/design-snake-game/" target="_blank"><span class="q-num">07</span>Design Snake Game</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#f59e0b"></div>
+          <span class="pattern-name">Monotonic Stack</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/next-greater-element-i/" target="_blank"><span class="q-num">01</span>Next Greater Element I</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/largest-rectangle-in-histogram/" target="_blank"><span class="q-num">02</span>Largest Rectangle in Histogram</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/online-stock-span/" target="_blank"><span class="q-num">03</span>Online Stock Span</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/daily-temperatures/" target="_blank"><span class="q-num">04</span>Daily Temperatures</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/remove-duplicate-letters/" target="_blank"><span class="q-num">05</span>Remove Duplicate Letters</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#d97706"></div>
+          <span class="pattern-name">Expression Evaluation & Two Stacks</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/basic-calculator/" target="_blank"><span class="q-num">01</span>Basic Calculator</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/basic-calculator-ii/" target="_blank"><span class="q-num">02</span>Basic Calculator II</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/evaluate-reverse-polish-notation/" target="_blank"><span class="q-num">03</span>Evaluate Reverse Polish Notation</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/evaluate-division/" target="_blank"><span class="q-num">04</span>Evaluate Division</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/simplify-path/" target="_blank"><span class="q-num">05</span>Simplify Path</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/min-stack/" target="_blank"><span class="q-num">06</span>Min Stack</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/baseball-game/" target="_blank"><span class="q-num">07</span>Baseball Game</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/backspace-string-compare/" target="_blank"><span class="q-num">08</span>Backspace String Compare</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/sliding-window-maximum/" target="_blank"><span class="q-num">09</span>Sliding Window Maximum</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 6: TREES
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="trees" id="cat-trees">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(16,185,129,0.12)">🌳</div>
+      <div class="cat-title">
+        <h2 style="color:#86efac">Trees &amp; BST</h2>
+        <div class="cat-meta">Traversal · Construction · Mirror & Symmetry · Path Sum · Validation</div>
+      </div>
+      <span class="cat-count">27 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#86efac"></div>
+          <span class="pattern-name">Traversal</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/binary-tree-inorder-traversal/" target="_blank"><span class="q-num">01</span>Binary Tree Inorder Traversal</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/binary-tree-preorder-traversal/" target="_blank"><span class="q-num">02</span>Binary Tree Preorder Traversal</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/binary-tree-postorder-traversal/" target="_blank"><span class="q-num">03</span>Binary Tree Postorder Traversal</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/binary-tree-level-order-traversal/" target="_blank"><span class="q-num">04</span>Binary Tree Level Order Traversal</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/" target="_blank"><span class="q-num">05</span>Binary Tree Zigzag Level Order Traversal</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#4ade80"></div>
+          <span class="pattern-name">Construction</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/" target="_blank"><span class="q-num">01</span>Construct Binary Tree from Preorder &amp; Inorder</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/" target="_blank"><span class="q-num">02</span>Construct Binary Tree from Inorder &amp; Postorder</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/" target="_blank"><span class="q-num">03</span>Construct Binary Tree from Preorder &amp; Postorder</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/" target="_blank"><span class="q-num">04</span>Convert Sorted Array to BST</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/" target="_blank"><span class="q-num">05</span>Convert Sorted List to BST</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#22c55e"></div>
+          <span class="pattern-name">Mirror & Symmetry</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/invert-binary-tree/" target="_blank"><span class="q-num">01</span>Invert Binary Tree</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/symmetric-tree/" target="_blank"><span class="q-num">02</span>Symmetric Tree</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/flip-equivalent-binary-trees/" target="_blank"><span class="q-num">03</span>Flip Equivalent Binary Trees</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#16a34a"></div>
+          <span class="pattern-name">Path Sum & Root to Leaf</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/path-sum/" target="_blank"><span class="q-num">01</span>Path Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/path-sum-ii/" target="_blank"><span class="q-num">02</span>Path Sum II</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/path-sum-iii/" target="_blank"><span class="q-num">03</span>Path Sum III</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/sum-root-to-leaf-numbers/" target="_blank"><span class="q-num">04</span>Sum Root to Leaf Numbers</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/binary-tree-maximum-path-sum/" target="_blank"><span class="q-num">05</span>Binary Tree Maximum Path Sum</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#15803d"></div>
+          <span class="pattern-name">BST Traversal & Validation</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/" target="_blank"><span class="q-num">01</span>Lowest Common Ancestor of Binary Tree</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/validate-binary-search-tree/" target="_blank"><span class="q-num">02</span>Validate Binary Search Tree</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/search-in-a-binary-search-tree/" target="_blank"><span class="q-num">03</span>Search in BST</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/closest-binary-search-tree-value/" target="_blank"><span class="q-num">04</span>Closest BST Value</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/diameter-of-binary-tree/" target="_blank"><span class="q-num">05</span>Diameter of Binary Tree</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/count-complete-tree-nodes/" target="_blank"><span class="q-num">06</span>Count Complete Tree Nodes</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/balanced-binary-tree/" target="_blank"><span class="q-num">07</span>Balanced Binary Tree</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/subtree-of-another-tree/" target="_blank"><span class="q-num">08</span>Subtree of Another Tree</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 7: HEAP / PRIORITY QUEUE
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="heap" id="cat-heap">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(236,72,153,0.15)">💎</div>
+      <div class="cat-title">
+        <h2 style="color:#f9a8d4">Heap &amp; Priority Queue</h2>
+        <div class="cat-meta">Kth Largest/Smallest · Top K Frequent · Merge K Lists · Design · Scheduling</div>
+      </div>
+      <span class="cat-count">21 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#f9a8d4"></div>
+          <span class="pattern-name">Kth Largest / Smallest</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/kth-largest-element-in-an-array/" target="_blank"><span class="q-num">01</span>Kth Largest Element in an Array</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/" target="_blank"><span class="q-num">02</span>Kth Smallest Element in a Sorted Matrix</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-median-from-data-stream/" target="_blank"><span class="q-num">03</span>Find Median from Data Stream</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/k-closest-points-to-origin/" target="_blank"><span class="q-num">04</span>K Closest Points to Origin</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/kth-largest-element-in-a-stream/" target="_blank"><span class="q-num">05</span>Kth Largest Element in a Stream</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#ec4899"></div>
+          <span class="pattern-name">Top K Frequent</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/top-k-frequent-elements/" target="_blank"><span class="q-num">01</span>Top K Frequent Elements</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/sort-characters-by-frequency/" target="_blank"><span class="q-num">02</span>Sort Characters By Frequency</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/top-k-frequent-words/" target="_blank"><span class="q-num">03</span>Top K Frequent Words</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/maximum-frequency-stack/" target="_blank"><span class="q-num">04</span>Maximum Frequency Stack</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#be185d"></div>
+          <span class="pattern-name">Merge K / Scheduling</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/merge-k-sorted-lists/" target="_blank"><span class="q-num">01</span>Merge k Sorted Lists</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/" target="_blank"><span class="q-num">02</span>Smallest Range Covering Elements from K Lists</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/task-scheduler/" target="_blank"><span class="q-num">03</span>Task Scheduler</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/rearrange-string-k-distance-apart/" target="_blank"><span class="q-num">04</span>Rearrange String k Distance Apart</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/reorganize-string/" target="_blank"><span class="q-num">05</span>Reorganize String</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/distant-barcodes/" target="_blank"><span class="q-num">06</span>Distant Barcodes</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 8: DYNAMIC PROGRAMMING
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="dp" id="cat-dp">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(6,182,212,0.12)">⚡</div>
+      <div class="cat-title">
+        <h2 style="color:#7dd3fc">Dynamic Programming</h2>
+        <div class="cat-meta">Basic DP · Interval/Range DP · Knapsack · Prefix Sums · Interval Partitioning · Counting</div>
+      </div>
+      <span class="cat-count">25 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#7dd3fc"></div>
+          <span class="pattern-name">Basic DP</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/climbing-stairs/" target="_blank"><span class="q-num">01</span>Climbing Stairs</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/house-robber/" target="_blank"><span class="q-num">02</span>House Robber</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/unique-paths/" target="_blank"><span class="q-num">03</span>Unique Paths</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/minimum-path-sum/" target="_blank"><span class="q-num">04</span>Minimum Path Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/maximum-subarray/" target="_blank"><span class="q-num">05</span>Maximum Subarray</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-increasing-subsequence/" target="_blank"><span class="q-num">06</span>Longest Increasing Subsequence</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/coin-change/" target="_blank"><span class="q-num">07</span>Coin Change</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/edit-distance/" target="_blank"><span class="q-num">08</span>Edit Distance</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-common-subsequence/" target="_blank"><span class="q-num">09</span>Longest Common Subsequence</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#38bdf8"></div>
+          <span class="pattern-name">Interval / Range DP & Knapsack</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/minimum-falling-path-sum/" target="_blank"><span class="q-num">01</span>Minimum Falling Path Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/burst-balloons/" target="_blank"><span class="q-num">02</span>Burst Balloons</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/partition-equal-subset-sum/" target="_blank"><span class="q-num">03</span>Partition Equal Subset Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/target-sum/" target="_blank"><span class="q-num">04</span>Target Sum</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/strange-printer/" target="_blank"><span class="q-num">05</span>Strange Printer</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/maximum-vacation-days/" target="_blank"><span class="q-num">06</span>Maximum Vacation Days</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#0284c7"></div>
+          <span class="pattern-name">Counting & Probability</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/unique-paths-iii/" target="_blank"><span class="q-num">01</span>Unique Paths III</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/distinct-subsequences/" target="_blank"><span class="q-num">02</span>Distinct Subsequences</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/count-different-palindromic-subsequences/" target="_blank"><span class="q-num">03</span>Count Different Palindromic Subsequences</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/count-numbers-with-unique-digits/" target="_blank"><span class="q-num">04</span>Count Numbers with Unique Digits</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/knight-probability-in-chessboard/" target="_blank"><span class="q-num">05</span>Knight Probability in Chessboard</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/dice-roll-simulation/" target="_blank"><span class="q-num">06</span>Dice Roll Simulation</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/predict-the-winner/" target="_blank"><span class="q-num">07</span>Predict the Winner</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/cherry-pickup/" target="_blank"><span class="q-num">08</span>Cherry Pickup</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/stone-game-vii/" target="_blank"><span class="q-num">09</span>Stone Game VII</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/non-overlapping-intervals/" target="_blank"><span class="q-num">10</span>Non-overlapping Intervals (Interval Partitioning)</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CATEGORY 9: GRAPHS
+  ═══════════════════════════════════════════════════════ -->
+  <div class="category" data-cats="graphs" id="cat-graphs">
+    <div class="cat-header" onclick="toggleCat(this)">
+      <div class="cat-icon" style="background:rgba(239,68,68,0.12)">🕸️</div>
+      <div class="cat-title">
+        <h2 style="color:#fda4af">Graphs</h2>
+        <div class="cat-meta">Connected Components · Shortest Path · Cycle Detection · Bipartite · MST · DAG Traversal</div>
+      </div>
+      <span class="cat-count">24 questions</span>
+      <span class="cat-toggle">▾</span>
+    </div>
+    <div class="patterns-grid">
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#fda4af"></div>
+          <span class="pattern-name">Connected Components</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/number-of-islands/" target="_blank"><span class="q-num">01</span>Number of Islands</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/" target="_blank"><span class="q-num">02</span>Connected Components in Undirected Graph</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/friend-circles/" target="_blank"><span class="q-num">03</span>Friend Circles</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/accounts-merge/" target="_blank"><span class="q-num">04</span>Accounts Merge</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/redundant-connection/" target="_blank"><span class="q-num">05</span>Redundant Connection</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#f43f5e"></div>
+          <span class="pattern-name">Shortest Path</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/network-delay-time/" target="_blank"><span class="q-num">01</span>Network Delay Time</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/cheapest-flights-within-k-stops/" target="_blank"><span class="q-num">02</span>Cheapest Flights Within K Stops</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/shortest-path-in-binary-matrix/" target="_blank"><span class="q-num">03</span>Shortest Path in Binary Matrix</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/word-ladder/" target="_blank"><span class="q-num">04</span>Word Ladder</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#be123c"></div>
+          <span class="pattern-name">Cycle Detection</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/course-schedule/" target="_blank"><span class="q-num">01</span>Course Schedule</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/course-schedule-ii/" target="_blank"><span class="q-num">02</span>Course Schedule II</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/find-eventual-safe-states/" target="_blank"><span class="q-num">03</span>Find Eventual Safe States</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#9f1239"></div>
+          <span class="pattern-name">Bipartite Check</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/is-graph-bipartite/" target="_blank"><span class="q-num">01</span>Is Graph Bipartite?</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/possible-bipartition/" target="_blank"><span class="q-num">02</span>Possible Bipartition</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/graph-coloring/" target="_blank"><span class="q-num">03</span>Graph Coloring</a></li>
+        </ul>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-header">
+          <div class="pattern-dot" style="background:#7c3aed"></div>
+          <span class="pattern-name">DAG Traversal</span>
+        </div>
+        <ul class="q-list">
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/alien-dictionary/" target="_blank"><span class="q-num">01</span>Alien Dictionary</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/longest-increasing-path-in-a-matrix/" target="_blank"><span class="q-num">02</span>Longest Increasing Path in a Matrix</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/sequence-reconstruction/" target="_blank"><span class="q-num">03</span>Sequence Reconstruction</a></li>
+          <li class="q-item"><a class="q-link external" href="https://leetcode.com/problems/all-paths-from-source-lead-to-destination/" target="_blank"><span class="q-num">04</span>All Paths from Source Lead to Destination</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    DSA Pattern-Wise Question Bank · Product Parikh &amp; Jain · All links → LeetCode
+  </footer>
+</div>
+
+<script>
+  // Toggle category
+  function toggleCat(header) {
+    header.parentElement.classList.toggle('collapsed');
+  }
+
+  // Filter by category
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      document.querySelectorAll('.category').forEach(section => {
+        if (cat === 'all') {
+          section.style.display = '';
+        } else {
+          const cats = section.dataset.cats || '';
+          section.style.display = cats.includes(cat) ? '' : 'none';
+        }
+      });
+    });
+  });
+
+  // Search
+  const searchInput = document.getElementById('search');
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase().trim();
+    document.querySelectorAll('.q-item').forEach(item => {
+      const text = item.textContent.toLowerCase();
+      item.classList.toggle('hidden', q.length > 0 && !text.includes(q));
+    });
+    document.querySelectorAll('.pattern').forEach(p => {
+      const visible = p.querySelectorAll('.q-item:not(.hidden)').length > 0;
+      p.classList.toggle('all-hidden', q.length > 0 && !visible);
+    });
+    // Show all categories when searching
+    if (q.length > 0) {
+      document.querySelectorAll('.category').forEach(c => c.style.display = '');
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-cat="all"]').classList.add('active');
+    }
+  });
+
+  // Count total questions
+  const total = document.querySelectorAll('.q-item').length;
+  document.getElementById('total-q').textContent = total;
+</script>
+</body>
+</html>
